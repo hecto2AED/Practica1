@@ -57,6 +57,7 @@ Usa siempre rutas referidas a la carpeta, en la que se encuentra el fichero fuen
   - `ruta3 <- '../../data/tabla1.txt'`: Fichero en la carpeta datos que cuelga de dos niveles superiores.
   - `ruta4 <-'C:/MisDatos/Ej.txt'`: **NO USAR NUNCA RUTAS ABSOLUTAS**.
 
+Hola, Marcelino, este texto es de prueba para ver cómo funciona.
 
 # Ejemplo: fichero *DFP1_11122015 124700.csv*
 
