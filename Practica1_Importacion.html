@@ -467,6 +467,7 @@ carpeta datos que cuelga de dos niveles superiores.</li>
 <li><code>ruta4 &lt;-&#39;C:/MisDatos/Ej.txt&#39;</code>: <strong>NO USAR NUNCA
 RUTAS ABSOLUTAS</strong>.</li>
 </ul>
+<p>Hola, Marcelino, este texto es de prueba para ver cómo funciona.</p>
 </div>
 </div>
 <div id="ejemplo-fichero-dfp1_11122015-124700.csv" class="section level1" number="2">
@@ -484,14 +485,54 @@ final. Compara las opciones <em>base</em> y <em>readr</em>.</li>
 <code>as.hms</code> (<code>hms</code> library).</li>
 <li>Almacenar con <code>save</code>.</li>
 </ol>
-<pre class="r"><code>fname &lt;- &#39;data/DFP1_11122015 124700.csv&#39;</code></pre>
+<pre class="r"><code>fname &lt;- &#39;data/DFP1_11122015 124700.csv&#39;
+data_frame &lt;- read.csv(&#39;data/DFP1_11122015 124700.csv&#39;, sep = &quot;\t&quot;, stringsAsFactors=F)
+
+library(&#39;hms&#39;)
+data_frame$FECHA &lt;- as.POSIXlt(data_frame$FECHA, format = &quot;%d/%m/%Y&quot;)
+data_frame$HORA &lt;- as_hms(data_frame$HORA)
+
+save(list = &quot;df&quot;, file = &quot;./data/DFP1.RData&quot;)</code></pre>
 </div>
 <div id="inspección-de-los-datos" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Inspección de los
 datos</h2>
 <p>Inspecciona los datos con <code>str</code>, <code>head</code>,
 <code>tail</code> y <code>summary</code>.</p>
-<pre class="r"><code># str, head, tail, summary</code></pre>
+<pre class="r"><code># str, head, tail, summary
+
+str(data_frame)</code></pre>
+<pre><code>&#39;data.frame&#39;:   8887 obs. of  5 variables:
+ $ FECHA            : POSIXlt, format: &quot;2015-12-11&quot; &quot;2015-12-11&quot; &quot;2015-12-11&quot; ...
+ $ HORA             : &#39;hms&#39; num  12:47:02 12:47:02 12:47:02 12:47:03 ...
+  ..- attr(*, &quot;units&quot;)= chr &quot;secs&quot;
+ $ Altura           : num  138 138 138 138 138 ...
+ $ Combinacion_Canya: num  2 2 2 2 2 2 2 2 2 2 ...
+ $ Temperatura      : num  14.6 14.6 14.6 14.6 14.6 14.6 14.6 14.6 14.6 14.6 ...</code></pre>
+<pre class="r"><code>head(data_frame)</code></pre>
+<pre><code>       FECHA     HORA Altura Combinacion_Canya Temperatura
+1 2015-12-11 12:47:02 137.81                 2        14.6
+2 2015-12-11 12:47:02 137.81                 2        14.6
+3 2015-12-11 12:47:02 137.81                 2        14.6
+4 2015-12-11 12:47:03 137.81                 2        14.6
+5 2015-12-11 12:47:03 137.81                 2        14.6
+6 2015-12-11 12:47:03 137.81                 2        14.6</code></pre>
+<pre class="r"><code>tail(data_frame)</code></pre>
+<pre><code>          FECHA     HORA Altura Combinacion_Canya Temperatura
+8882 2015-12-11 13:49:41 949.13                 2        14.7
+8883 2015-12-11 13:49:41 949.13                 2        14.7
+8884 2015-12-11 13:49:41 949.13                 2        14.7
+8885 2015-12-11 13:49:41 949.13                 2        14.7
+8886 2015-12-11 13:49:41 949.13                 2        14.7
+8887 2015-12-11 13:49:42 949.13                 2        14.7</code></pre>
+<pre class="r"><code>summary(data_frame)</code></pre>
+<pre><code>     FECHA                 HORA                     Altura       Combinacion_Canya  Temperatura   
+ Min.   :2015-12-11   Min.   :12:47:02.000000   Min.   : 137.8   Min.   :1         Min.   :14.40  
+ 1st Qu.:2015-12-11   1st Qu.:13:02:55.000000   1st Qu.: 400.9   1st Qu.:1         1st Qu.:14.50  
+ Median :2015-12-11   Median :13:18:22.000000   Median : 953.1   Median :2         Median :14.60  
+ Mean   :2015-12-11   Mean   :13:18:29.030269   Mean   : 785.8   Mean   :2         Mean   :14.57  
+ 3rd Qu.:2015-12-11   3rd Qu.:13:34:14.000000   3rd Qu.:1079.0   3rd Qu.:3         3rd Qu.:14.60  
+ Max.   :2015-12-11   Max.   :13:49:42.000000   Max.   :1089.1   Max.   :3         Max.   :14.70  </code></pre>
 </div>
 </div>
 <div id="fichero-transactions-from-a-bakery-kaggle" class="section level1" number="3">
@@ -511,14 +552,68 @@ para previsualizar el fichero y especificar los tipos de datos.</li>
 <li>Guarda el data frame con <code>save</code>.</li>
 </ol>
 <pre class="r"><code>library(readr)
-filename &lt;- &quot;data/BreadBasket_DMS.csv&quot;</code></pre>
+filename &lt;- &quot;data/BreadBasket_DMS.csv&quot;
+
+library(readr)
+BreadBasket_DMS &lt;- read_csv(&quot;data/BreadBasket_DMS.csv&quot;)
+
+BreadBasket_DMS$Date &lt;- as.POSIXlt(BreadBasket_DMS$Date, format = &quot;%d/%m/%Y&quot;)
+BreadBasket_DMS$Time &lt;- as_hms(BreadBasket_DMS$Time)
+
+save(file = &#39;./data/BreadBascket_DMS.RData&#39;, list = &quot;df&quot;)</code></pre>
 </div>
 <div id="inspección-de-los-datos-1" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Inspección de los
 datos</h2>
 <p>Inspecciona los datos con <code>str</code>, <code>head</code>,
 <code>tail</code> y <code>summary</code>.</p>
-<pre class="r"><code># dim, str, ...</code></pre>
+<pre class="r"><code># dim, str, ...
+
+dim(BreadBasket_DMS)</code></pre>
+<pre><code>[1] 21293     4</code></pre>
+<pre class="r"><code>str(BreadBasket_DMS)</code></pre>
+<pre><code>spc_tbl_ [21,293 × 4] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Date       : POSIXlt[1:21293], format: &quot;2016-10-30&quot; &quot;2016-10-30&quot; &quot;2016-10-30&quot; ...
+ $ Time       : &#39;hms&#39; num [1:21293] 09:58:11 10:05:34 10:05:34 10:07:57 ...
+  ..- attr(*, &quot;units&quot;)= chr &quot;secs&quot;
+ $ Transaction: num [1:21293] 1 2 2 3 3 3 4 5 5 5 ...
+ $ Item       : chr [1:21293] &quot;Bread&quot; &quot;Scandinavian&quot; &quot;Scandinavian&quot; &quot;Hot chocolate&quot; ...
+ - attr(*, &quot;spec&quot;)=
+  .. cols(
+  ..   Date = col_date(format = &quot;&quot;),
+  ..   Time = col_time(format = &quot;&quot;),
+  ..   Transaction = col_double(),
+  ..   Item = col_character()
+  .. )
+ - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
+<pre class="r"><code>head(BreadBasket_DMS)</code></pre>
+<pre><code># A tibble: 6 × 4
+  Date                Time     Transaction Item         
+  &lt;dttm&gt;              &lt;time&gt;         &lt;dbl&gt; &lt;chr&gt;        
+1 2016-10-30 00:00:00 09:58:11           1 Bread        
+2 2016-10-30 00:00:00 10:05:34           2 Scandinavian 
+3 2016-10-30 00:00:00 10:05:34           2 Scandinavian 
+4 2016-10-30 00:00:00 10:07:57           3 Hot chocolate
+5 2016-10-30 00:00:00 10:07:57           3 Jam          
+6 2016-10-30 00:00:00 10:07:57           3 Cookies      </code></pre>
+<pre class="r"><code>tail(BreadBasket_DMS)</code></pre>
+<pre><code># A tibble: 6 × 4
+  Date                Time     Transaction Item        
+  &lt;dttm&gt;              &lt;time&gt;         &lt;dbl&gt; &lt;chr&gt;       
+1 2017-04-09 00:00:00 14:32:58        9682 Tacos/Fajita
+2 2017-04-09 00:00:00 14:32:58        9682 Coffee      
+3 2017-04-09 00:00:00 14:32:58        9682 Tea         
+4 2017-04-09 00:00:00 14:57:06        9683 Coffee      
+5 2017-04-09 00:00:00 14:57:06        9683 Pastry      
+6 2017-04-09 00:00:00 15:04:24        9684 Smoothies   </code></pre>
+<pre class="r"><code>summary(BreadBasket_DMS)</code></pre>
+<pre><code>      Date                          Time                  Transaction       Item          
+ Min.   :2016-10-30 00:00:00   Min.   :01:21:05.000000   Min.   :   1   Length:21293      
+ 1st Qu.:2016-12-03 00:00:00   1st Qu.:10:56:40.000000   1st Qu.:2548   Class :character  
+ Median :2017-01-21 00:00:00   Median :12:37:30.000000   Median :5067   Mode  :character  
+ Mean   :2017-01-17 02:09:18   Mean   :12:45:01.401259   Mean   :4952                     
+ 3rd Qu.:2017-02-28 00:00:00   3rd Qu.:14:29:37.000000   3rd Qu.:7329                     
+ Max.   :2017-04-09 00:00:00   Max.   :23:38:41.000000   Max.   :9684                     </code></pre>
 </div>
 </div>
 <div id="fichero-spss-psychbike.sav" class="section level1" number="4">
@@ -535,14 +630,78 @@ Podemos leer ficheros de IBM SPSS mediante la librería
 <li>Guardar el data frame con <code>save</code>.</li>
 </ol>
 <pre class="r"><code>library(haven)
-filename &lt;- &quot;data/PsychBike.sav&quot;</code></pre>
+filename &lt;- &quot;data/PsychBike.sav&quot;
+
+library(haven)
+bicicleta &lt;- read_sav(file = &quot;data/PsychBike.sav&quot;,encoding = NULL)
+
+save(file = &quot;data/PsychBike.RData&quot;, list = &quot;df&quot;)</code></pre>
 </div>
 <div id="inspección-de-los-datos-2" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Inspección de los
 datos</h2>
 <p>Inspecciona los datos con <code>str</code>, <code>head</code>,
 <code>tail</code> y <code>summary</code>.</p>
-<pre class="r"><code># dim, str, etc.</code></pre>
+<pre class="r"><code># dim, str, etc.
+
+dim(bicicleta)</code></pre>
+<pre><code>[1] 2355    6</code></pre>
+<pre class="r"><code>str(bicicleta)</code></pre>
+<pre><code>tibble [2,355 × 6] (S3: tbl_df/tbl/data.frame)
+ $ vehicle           : dbl+lbl [1:2355] 1, 5, 2, 1, 4, 1, 2, 1, 4, 7, 2, 3, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1...
+   ..@ format.spss: chr &quot;F11.0&quot;
+   ..@ labels     : Named num [1:7] 1 2 3 4 5 6 7
+   .. ..- attr(*, &quot;names&quot;)= chr [1:7] &quot;car&quot; &quot;LGV&quot; &quot;SUV&quot; &quot;bus&quot; ...
+ $ Colour            : dbl+lbl [1:2355]  1,  2,  1, 99,  9,  3,  4,  2,  2, 99,  4,  4,  1,  1,  1,  4,  2,  4,  ...
+   ..@ format.spss: chr &quot;F11.0&quot;
+   ..@ labels     : Named num [1:8] 1 2 3 4 5 6 9 99
+   .. ..- attr(*, &quot;names&quot;)= chr [1:8] &quot;blue&quot; &quot;red&quot; &quot;silver/grey&quot; &quot;white&quot; ...
+ $ hour              : &#39;hms&#39; num [1:2355] 16:00:00 16:00:00 16:00:00 16:00:00 ...
+  ..- attr(*, &quot;units&quot;)= chr &quot;secs&quot;
+  ..- attr(*, &quot;format.spss&quot;)= chr &quot;TIME11.2&quot;
+ $ helmet            : num [1:2355] 0 0 0 0 0 0 1 1 1 1 ...
+  ..- attr(*, &quot;format.spss&quot;)= chr &quot;F11.0&quot;
+ $ Distance_from_kerb: num [1:2355] 0.5 0.5 0.5 0.5 0.5 0.5 1 1 1 1 ...
+  ..- attr(*, &quot;label&quot;)= chr &quot;Distance from kerb&quot;
+  ..- attr(*, &quot;format.spss&quot;)= chr &quot;F11.1&quot;
+ $ Passing_distance  : num [1:2355] 1.864 0.748 1.567 1.39 1.294 ...
+  ..- attr(*, &quot;label&quot;)= chr &quot;Passing distance&quot;
+  ..- attr(*, &quot;format.spss&quot;)= chr &quot;F11.3&quot;</code></pre>
+<pre class="r"><code>head(bicicleta)</code></pre>
+<pre><code># A tibble: 6 × 6
+  vehicle   Colour           hour   helmet Distance_from_kerb Passing_distance
+  &lt;dbl+lbl&gt; &lt;dbl+lbl&gt;        &lt;time&gt;  &lt;dbl&gt;              &lt;dbl&gt;            &lt;dbl&gt;
+1 1 [car]    1 [blue]        16:00       0                0.5            1.86 
+2 5 [HGV]    2 [red]         16:00       0                0.5            0.748
+3 2 [LGV]    1 [blue]        16:00       0                0.5            1.57 
+4 1 [car]   99 [unknown]     16:00       0                0.5            1.39 
+5 4 [bus]    9 [other]       16:00       0                0.5            1.29 
+6 1 [car]    3 [silver/grey] 16:00       0                0.5            1.26 </code></pre>
+<pre class="r"><code>tail(bicicleta)</code></pre>
+<pre><code># A tibble: 6 × 6
+  vehicle   Colour          hour   helmet Distance_from_kerb Passing_distance
+  &lt;dbl+lbl&gt; &lt;dbl+lbl&gt;       &lt;time&gt;  &lt;dbl&gt;              &lt;dbl&gt;            &lt;dbl&gt;
+1 2 [LGV]   9 [other]       10:00       1               1.25            1.10 
+2 1 [car]   3 [silver/grey] 10:00       1               1.25            1.01 
+3 1 [car]   2 [red]         10:00       1               1.25            0.922
+4 5 [HGV]   4 [white]       10:00       1               1.25            0.564
+5 1 [car]   1 [blue]        10:00       1               1.25            0.65 
+6 1 [car]   6 [green]       10:00       1               1.25            0.781</code></pre>
+<pre class="r"><code>summary(bicicleta)</code></pre>
+<pre><code>    vehicle          Colour            hour                     helmet       Distance_from_kerb
+ Min.   :1.000   Min.   : 1.000   Min.   :07:00:00.000000   Min.   :0.0000   Min.   :0.2500    
+ 1st Qu.:1.000   1st Qu.: 1.000   1st Qu.:10:00:00.000000   1st Qu.:0.0000   1st Qu.:0.2500    
+ Median :1.000   Median : 3.000   Median :12:00:00.000000   Median :0.0000   Median :0.5000    
+ Mean   :1.634   Mean   : 3.556   Mean   :12:05:37.834395   Mean   :0.4879   Mean   :0.6702    
+ 3rd Qu.:2.000   3rd Qu.: 4.000   3rd Qu.:15:00:00.000000   3rd Qu.:1.0000   3rd Qu.:1.0000    
+ Max.   :7.000   Max.   :99.000   Max.   :17:00:00.000000   Max.   :1.0000   Max.   :1.2500    
+ Passing_distance
+ Min.   :0.144   
+ 1st Qu.:1.053   
+ Median :1.279   
+ Mean   :1.314   
+ 3rd Qu.:1.540   
+ Max.   :3.537   </code></pre>
 </div>
 </div>
 <div id="fichero-json-filecodificado.json" class="section level1" number="5">
@@ -583,7 +742,430 @@ convertir el objeto character a data frame con
 <li>Almacenar los resultados en <code>FileCodificado.RData</code>.</li>
 </ol>
 <pre class="r"><code>library(jsonlite)
-filename &lt;- &#39;data/FileCodificado.json&#39;</code></pre>
+filename &lt;- &#39;data/FileCodificado.json&#39;
+
+joseson &lt;- read_json(&quot;./Data/FileCodificado.json&quot;, simplifyVector = TRUE)
+joseson</code></pre>
+<pre><code>   Carburante Potencia Servicio_Vehiculo Actividad_Vehiculo       GAMA Unidades_Matriculadas
+1           1       60               B00                  D UTILITARIO                     0
+2           1       60               B00                  D UTILITARIO                     0
+3           1       60               B00                  D UTILITARIO                     0
+4           1       60               B00                  D UTILITARIO                     0
+5           1       60               B00                  D UTILITARIO                     0
+6           1       60               B00                  D UTILITARIO                     0
+7           1       60               B00                  D UTILITARIO                     0
+8           1       60               B00                  D UTILITARIO                     0
+9           1       60               B00                  D UTILITARIO                     0
+10          1       60               B00                  D UTILITARIO                     0
+11          1       60               B00                  D UTILITARIO                     0
+12          1       60               B00                  D UTILITARIO                     0
+13          1       60               B00                  D UTILITARIO                     0
+14          1       60               B00                  D UTILITARIO                     0
+15          1       60               B00                  D UTILITARIO                     0
+16          1       60               B00                  D UTILITARIO                     0
+17          1       60               B00                  D UTILITARIO                     0
+18          1       60               B00                  D UTILITARIO                     0
+19          1       60               B00                  D UTILITARIO                     0
+20          1       60               B00                  D UTILITARIO                     0
+21          1       60               B00                  D UTILITARIO                     0
+22          1       60               B00                  D UTILITARIO                     0
+23          1       60               B00                  D UTILITARIO                     0
+24          1       60               B00                  D UTILITARIO                     0
+25          1       60               B00                  D UTILITARIO                     0
+26          1       60               B00                  D UTILITARIO                     0
+27          1       60               B00                  D UTILITARIO                     0
+28          1       60               B00                  D UTILITARIO                     0
+29          1       60               B00                  D UTILITARIO                     0
+30          1       60               B00                  D UTILITARIO                     0
+31          1       60               B00                  D UTILITARIO                     0
+32          1       60               B00                  D UTILITARIO                     0
+33          1       60               B00                  D UTILITARIO                     0
+34          1       60               B00                  D UTILITARIO                     0
+35          1       60               B00                  D UTILITARIO                     0
+36          1       60               B00                  D UTILITARIO                     0
+37          1       60               B00                  D UTILITARIO                     0
+38          1       60               B00                  D UTILITARIO                     0
+39          1       60               B00                  D UTILITARIO                     0
+40          1       60               B00                  D UTILITARIO                     0
+41          1       60               B00                  D UTILITARIO                     0
+42          1       60               B00                  D UTILITARIO                     0
+43          1       60               B00                  D UTILITARIO                     0
+44          1       60               B00                  D UTILITARIO                     0
+45          1       60               B00                  D UTILITARIO                     0
+46          1       60               B00                  D UTILITARIO                     0
+47          1       60               B00                  D UTILITARIO                     0
+48          1       60               B00                  D UTILITARIO                     0
+49          1       60               B00                  D UTILITARIO                     0
+50          1       60               B00                  D UTILITARIO                     0
+51          1       60               B00                  D UTILITARIO                     0
+52          1       60               B00                  D UTILITARIO                     0
+53          1       60               B00                  D UTILITARIO                     0
+54          1       60               B00                  D UTILITARIO                     0
+55          1       60               B00                  D UTILITARIO                     0
+56          1       60               B00                  D UTILITARIO                     0
+57          1       60               B00                  D UTILITARIO                     0
+58          1       60               B00                  D UTILITARIO                     0
+59          1       60               B00                  D UTILITARIO                     0
+60          1       60               B00                  D UTILITARIO                     0
+61          1       60               B00                  D UTILITARIO                     0
+62          1       60               B00                  D UTILITARIO                     0
+63          1       60               B00                  D UTILITARIO                     0
+64          1       60               B00                  D UTILITARIO                     0
+65          1       60               B00                  D UTILITARIO                     0
+66          1       60               B00                  D UTILITARIO                     0
+67          1       60               B00                  D UTILITARIO                     0
+68          1       60               B00                  D UTILITARIO                     0
+69          1       60               B00                  D UTILITARIO                     0
+70          1       60               B00                  D UTILITARIO                     0
+71          1       60               B00                  D UTILITARIO                     0
+72          1       60               B00                  D UTILITARIO                     0
+73          1       60               B00                  D UTILITARIO                     0
+74          1       60               B00                  D UTILITARIO                     0
+75          1       60               B00                  D UTILITARIO                     0
+76          1       60               B00                  D UTILITARIO                     0
+77          1       60               B00                  D UTILITARIO                     0
+78          1       60               B00                  D UTILITARIO                     0
+79          1       60               B00                  D UTILITARIO                     0
+80          1       60               B00                  D UTILITARIO                     0
+81          1       60               B00                  D UTILITARIO                     0
+82          1       60               B00                  D UTILITARIO                     0
+83          1       60               B00                  D UTILITARIO                     0
+      Localidad_definitiva Provincia_definitiva Codigo_Postal Viviendas precio_medio_m2
+1                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+2                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+3                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+4                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+5                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+6                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+7                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+8                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+9                ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+10               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+11               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+12               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+13               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+14               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+15               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+16               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+17               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+18               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+19               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+20               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+21               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+22               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+23               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+24               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+25               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+26               ALGECIRAS                CADIZ        0.0297    0.1201          0.1799
+27             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+28             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+29             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+30             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+31             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+32             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+33             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+34             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+35             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+36             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+37             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+38             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+39             BENALMADENA               MALAGA        0.4860    0.3258          0.6015
+40 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+41 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+42 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+43 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+44 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+45 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+46 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+47 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+48 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+49 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+50 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+51 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+52 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+53 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+54 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+55 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+56 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+57 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+58 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+59 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+60 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+61 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+62 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+63 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+64 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+65 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+66 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+67 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+68 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+69 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+70 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+71 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+72 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+73 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+74 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+75 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+76 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+77 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+78 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+79 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+80 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+81 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+82 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+83 CHICLANA DE LA FRONTERA                CADIZ        0.0280    0.1132          0.4255
+   Peso_vivienda                    RAISON_SOCIAL                            RUE_SSOC
+1              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+2              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+3              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+4              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+5              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+6              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+7              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+8              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+9              2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+10             2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+11             2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+12             2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+13             2 ALGECIREÑA DE MOTOR E INV., S.L.             Ctra. a Malaga, Km. 108
+14             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+15             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+16             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+17             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+18             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+19             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+20             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+21             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+22             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+23             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+24             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+25             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+26             2   AUTOMOVILES DEL ESTRECHO, S.A. CTRA. N-340 CÁDIZ-MÁLAGA, KM. 108,4
+27             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+28             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+29             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+30             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+31             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+32             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+33             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+34             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+35             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+36             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+37             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+38             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+39             4             HICA AUTOMOCIÓN, SL.                     C/SIDRA, 21 P.I
+40             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+41             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+42             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+43             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+44             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+45             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+46             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+47             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+48             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+49             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+50             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+51             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+52             3              AUTOS COLCHON, S.L.              C/ ALAMEDA SOLANO, S/N
+53             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+54             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+55             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+56             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+57             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+58             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+59             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+60             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+61             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+62             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+63             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+64             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+65             3                   HOYOCARS, S.L.                    C/ MANZANILLA, 1
+66             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+67             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+68             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+69             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+70             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+71             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+72             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+73             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+74             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+75             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+76             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+77             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+78             3                 RAMON HOYO, S.L.            AVDA. REYES CATOLICOS, 5
+79             3           TALLERES COLCHÓN, S.L.                          Caraza, 33
+80             3           TALLERES COLCHÓN, S.L.                          Caraza, 33
+81             3           TALLERES COLCHÓN, S.L.                          Caraza, 33
+82             3           TALLERES COLCHÓN, S.L.                          Caraza, 33
+83             3           TALLERES COLCHÓN, S.L.                          Caraza, 33
+   Edad_Conductor Numero de Conductores Antigüedad Anos_Antiguedad Numero_vehiculos_parque
+1    18 a 20 años                0.0132          0               0                       0
+2    21 a 24 años                0.0569          0               0                       0
+3    25 a 29 años                0.1086          0               0                       0
+4    30 a 34 años                0.1392          0               0                       0
+5    35 a 39 años                0.1706          0               0                       0
+6    40 a 44 años                0.1577          0               0                       0
+7    45 a 49 años                0.1408          0               0                       0
+8    50 a 54 años                0.1144          0               0                       0
+9    55 a 59 años                0.1007          0               0                       0
+10   60 a 64 años                0.0789          0               0                       0
+11   65 a 69 años                0.0586          0               0                       0
+12   70 a 74 años                0.0333          0               0                       0
+13 Más de 74 años                0.0228          0               0                       0
+14   18 a 20 años                0.0132          0               0                       0
+15   21 a 24 años                0.0569          0               0                       0
+16   25 a 29 años                0.1086          0               0                       0
+17   30 a 34 años                0.1392          0               0                       0
+18   35 a 39 años                0.1706          0               0                       0
+19   40 a 44 años                0.1577          0               0                       0
+20   45 a 49 años                0.1408          0               0                       0
+21   50 a 54 años                0.1144          0               0                       0
+22   55 a 59 años                0.1007          0               0                       0
+23   60 a 64 años                0.0789          0               0                       0
+24   65 a 69 años                0.0586          0               0                       0
+25   70 a 74 años                0.0333          0               0                       0
+26 Más de 74 años                0.0228          0               0                       0
+27   18 a 20 años                0.0074          0               0                       0
+28   21 a 24 años                0.0239          0               0                       0
+29   25 a 29 años                0.0432          0               0                       0
+30   30 a 34 años                0.0581          0               0                       0
+31   35 a 39 años                0.0795          0               0                       0
+32   40 a 44 años                0.0781          0               0                       0
+33   45 a 49 años                0.0668          0               0                       0
+34   50 a 54 años                0.0532          0               0                       0
+35   55 a 59 años                0.0439          0               0                       0
+36   60 a 64 años                0.0358          0               0                       0
+37   65 a 69 años                0.0265          0               0                       0
+38   70 a 74 años                0.0171          0               0                       0
+39 Más de 74 años                0.0110          0               0                       0
+40   18 a 20 años                0.0099          0               0                       0
+41   21 a 24 años                0.0321          0               0                       0
+42   25 a 29 años                0.0793          0               0                       0
+43   30 a 34 años                0.0946          0               0                       0
+44   35 a 39 años                0.1150          0               0                       0
+45   40 a 44 años                0.1064          0               0                       0
+46   45 a 49 años                0.1000          0               0                       0
+47   50 a 54 años                0.0838          0               0                       0
+48   55 a 59 años                0.0625          0               0                       0
+49   60 a 64 años                0.0376          0               0                       0
+50   65 a 69 años                0.0272          0               0                       0
+51   70 a 74 años                0.0151          0               0                       0
+52 Más de 74 años                0.0098          0               0                       0
+53   18 a 20 años                0.0099          0               0                       0
+54   21 a 24 años                0.0321          0               0                       0
+55   25 a 29 años                0.0793          0               0                       0
+56   30 a 34 años                0.0946          0               0                       0
+57   35 a 39 años                0.1150          0               0                       0
+58   40 a 44 años                0.1064          0               0                       0
+59   45 a 49 años                0.1000          0               0                       0
+60   50 a 54 años                0.0838          0               0                       0
+61   55 a 59 años                0.0625          0               0                       0
+62   60 a 64 años                0.0376          0               0                       0
+63   65 a 69 años                0.0272          0               0                       0
+64   70 a 74 años                0.0151          0               0                       0
+65 Más de 74 años                0.0098          0               0                       0
+66   18 a 20 años                0.0099          0               0                       0
+67   21 a 24 años                0.0321          0               0                       0
+68   25 a 29 años                0.0793          0               0                       0
+69   30 a 34 años                0.0946          0               0                       0
+70   35 a 39 años                0.1150          0               0                       0
+71   40 a 44 años                0.1064          0               0                       0
+72   45 a 49 años                0.1000          0               0                       0
+73   50 a 54 años                0.0838          0               0                       0
+74   55 a 59 años                0.0625          0               0                       0
+75   60 a 64 años                0.0376          0               0                       0
+76   65 a 69 años                0.0272          0               0                       0
+77   70 a 74 años                0.0151          0               0                       0
+78 Más de 74 años                0.0098          0               0                       0
+79   18 a 20 años                0.0099          0               0                       0
+80   21 a 24 años                0.0321          0               0                       0
+81   25 a 29 años                0.0793          0               0                       0
+82   30 a 34 años                0.0946          0               0                       0
+83   35 a 39 años                0.1150          0               0                       0
+     Cluster_GamaPotencia   Cluster_Antiguedad   Cluster_Edad
+1  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+2  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+3  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+4  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+5  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+6  cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+7  cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+8  cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+9  cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+10 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+11 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+12 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+13 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+14 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+15 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+16 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+17 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+18 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+19 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+20 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+21 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+22 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+23 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+24 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+25 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+26 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+27 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+28 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+29 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+30 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+31 cluster_1_GamaPotencia cluster_3_Antiguedad cluster_3_Edad
+32 cluster_1_GamaPotencia cluster_3_Antiguedad cluster_3_Edad
+33 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+34 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+35 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+36 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+37 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+38 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+39 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+40 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+41 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+42 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+43 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+44 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+45 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+46 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+47 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+48 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+49 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+50 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+51 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+52 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+53 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+54 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+55 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+56 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+57 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+58 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+59 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+60 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+61 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+62 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+63 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+64 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+65 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+66 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+67 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+68 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+69 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+70 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+71 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+72 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+73 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+74 cluster_1_GamaPotencia cluster_5_Antiguedad cluster_3_Edad
+75 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+76 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+77 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+78 cluster_1_GamaPotencia cluster_6_Antiguedad cluster_3_Edad
+79 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+80 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+81 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+82 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad
+83 cluster_1_GamaPotencia cluster_1_Antiguedad cluster_3_Edad</code></pre>
 </div>
 <div id="inspección-de-los-datos-3" class="section level2" number="5.3">
 <h2><span class="header-section-number">5.3</span> Inspección de los

@@ -113,7 +113,6 @@ filename <- "data/BreadBasket_DMS.csv"
 
 library(readr)
 BreadBasket_DMS <- read_csv("data/BreadBasket_DMS.csv")
-View(BreadBasket_DMS)
 
 BreadBasket_DMS$Date <- as.POSIXlt(BreadBasket_DMS$Date, format = "%d/%m/%Y")
 BreadBasket_DMS$Time <- as_hms(BreadBasket_DMS$Time)
@@ -152,7 +151,7 @@ library(haven)
 filename <- "data/PsychBike.sav"
 
 library(haven)
-read_sav(file = "data/PsychBike.sav",encoding = NULL)
+bicicleta <- read_sav(file = "data/PsychBike.sav",encoding = NULL)
 
 save(file = "data/PsychBike.RData", list = "df")
 ```
@@ -163,6 +162,13 @@ Inspecciona los datos con `str`, `head`, `tail` y `summary`.
 
 ```{r}
 # dim, str, etc.
+
+dim(bicicleta)
+str(bicicleta)
+head(bicicleta)
+tail(bicicleta)
+summary(bicicleta)
+
 ```
 
 
@@ -190,6 +196,20 @@ En R podemos importar ficheros JSON con la librería `jsonlite`. Las funciones m
 ```{r}
 library(jsonlite)
 filename <- 'data/FileCodificado.json'
+
+joseson <- read_json("./Data/FileCodificado.json", simplifyVector = FALSE) #Con TRUE da el mismo resultado que joseson1
+joseson
+
+joseson1 <- fromJSON("./Data/FileCodificado.json")
+joseson1
+
+joseson2 <- read_file("./Data/FileCodificado.json")
+joseson2
+joseson2_df <- fromJSON(joseson2) 
+joseson2_df
+
+save(file = "./Data/FileCodificado.RData", list = "df")
+
 ```
 
 ## Inspección de los datos
