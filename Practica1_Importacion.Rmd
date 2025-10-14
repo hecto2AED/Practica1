@@ -70,6 +70,14 @@ Hola, Marcelino, este texto es de prueba para ver cómo funciona.
 
 ```{r}
 fname <- 'data/DFP1_11122015 124700.csv'
+data_frame <- read.csv('data/DFP1_11122015 124700.csv', sep = "\t", stringsAsFactors=F)
+
+library('hms')
+data_frame$FECHA <- as.POSIXlt(data_frame$FECHA, format = "%d/%m/%Y")
+data_frame$HORA <- as_hms(data_frame$HORA)
+
+save(list = "df", file = "./data/DFP1.RData")
+
 ```
 
 ## Inspección de los datos
@@ -78,6 +86,12 @@ Inspecciona los datos con `str`, `head`, `tail` y `summary`.
 
 ```{r}
 # str, head, tail, summary
+
+str(data_frame)
+head(data_frame)
+tail(data_frame)
+summary(data_frame)
+
 ```
 
 
@@ -96,6 +110,15 @@ Otra opción es usar la librería `readr` para especificar directamente el tipo 
 ```{r}
 library(readr)
 filename <- "data/BreadBasket_DMS.csv"
+
+library(readr)
+BreadBasket_DMS <- read_csv("data/BreadBasket_DMS.csv")
+View(BreadBasket_DMS)
+
+BreadBasket_DMS$Date <- as.POSIXlt(BreadBasket_DMS$Date, format = "%d/%m/%Y")
+BreadBasket_DMS$Time <- as_hms(BreadBasket_DMS$Time)
+
+save(file = './data/BreadBascket_DMS.RData', list = "df")
 ```
 
 ## Inspección de los datos
@@ -104,6 +127,13 @@ Inspecciona los datos con `str`, `head`, `tail` y `summary`.
 
 ```{r}
 # dim, str, ...
+
+dim(BreadBasket_DMS)
+str(BreadBasket_DMS)
+head(BreadBasket_DMS)
+tail(BreadBasket_DMS)
+summary(BreadBasket_DMS)
+
 ```
 
 
@@ -120,6 +150,11 @@ Podemos leer ficheros de IBM SPSS mediante la librería `haven`.
 ```{r}
 library(haven)
 filename <- "data/PsychBike.sav"
+
+library(haven)
+read_sav(file = "data/PsychBike.sav",encoding = NULL)
+
+save(file = "data/PsychBike.RData", list = "df")
 ```
 
 ## Inspección de los datos
