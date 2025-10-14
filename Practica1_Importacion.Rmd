@@ -228,7 +228,19 @@ Es importante saber cómo exportar datos en este formato.
   2. Como alternativa, obtener la representación JSON de los datos con `toJSON` y luego almacenarlos con `write_file`. Observar la diferencia de usar o no el parámetro `pretty` en `toJSON`.
 
 ```{r}
-# ...
+
+iris
+library(jsonlite)
+library(readr)
+
+write_json(iris, path = "iris_directo.json")
+
+iris_json_compacto <- toJSON(iris)
+write_file(iris_json_compacto, "iris_compacto.json")
+
+iris_json_pretty <- toJSON(iris, pretty = TRUE)
+write_file(iris_json_pretty, "iris_pretty.json")
+
 ```
 
 
