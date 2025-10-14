@@ -257,11 +257,11 @@ write_file(iris_json_pretty, "iris_pretty.json")
 
 ```{r warning=F}
 library(readxl)
-fname <- "data/ERCA.xlsx"
+fname <- "./data/ERCA.xlsx"
 
 # Usaremos la función read_excel de readxl
 df <- read_excel(fname, sheet=2) # El formato de las fechas no es correcto
-
+df
 # Columnas date: FECHA*
 # Columnas numeric: COL*, TG, HIDROF, ANTI*, DIURET, IECAS, PESO, TALLA?, HB,
 #                   IST, FERRITINA, UREA, FOSFORO, CALCIO, CICALCET, QUELANTES,
@@ -270,6 +270,18 @@ df <- read_excel(fname, sheet=2) # El formato de las fechas no es correcto
 # Es más fácil ver cuales NO son 'numeric'.
 # Definir los tipos de datos en 'ct' y releer con 'read_excel'.
 # df <- read_excel(fname, sheet=2, col_types=ct)
+
+col_names <- colnames(df)
+ct <- col_names
+ct[] <- 'text'
+ct[grepl('FECHA.*', col_names)] = 'date'
+ct[grepl('COL.*', col_names)] = 'numeric'
+ct[grepl('CICALCET', col_names)] = 'numeric'
+ct[1] = 'numeric'
+
+df <- read_excel(fname, sheet = 2, col_types = ct)
+df
+save(file=)
 ```
 
 ```{r}
