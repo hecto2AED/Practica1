@@ -195,6 +195,7 @@ En R podemos importar ficheros JSON con la librería `jsonlite`. Las funciones m
 
 ```{r}
 library(jsonlite)
+library(readr)
 filename <- 'data/FileCodificado.json'
 
 joseson <- read_json("./Data/FileCodificado.json", simplifyVector = FALSE) #Con TRUE da el mismo resultado que joseson1
@@ -218,6 +219,10 @@ Inspecciona los datos con `str`, `head`, `tail` y `summary`.
 
 ```{r}
 # str, head, tail, summary
+str(joseson)
+head(joseson)
+tail(joseson)
+summary(joseson)
 ```
 
 ## Extra: exportar datos en formato JSON
@@ -281,11 +286,13 @@ ct[1] = 'numeric'
 
 df <- read_excel(fname, sheet = 2, col_types = ct)
 df
-save(file=)
+save(file = "./Data/ERCA.RData", list = "df")
 ```
 
 ```{r}
 # save()
+save(file = "./Data/ERCA.RData", list = "df")
+
 ```
 
 ## Inspección de los datos
@@ -296,6 +303,14 @@ save(file=)
 ```{r}
 # Conviene limpiar primero un poco => eliminar is.na, etc.
 # head, tail, str, summary
+
+df <- df[!is.na(df$IDENTIFICA), ]
+head(df)
+tail(df)
+str(df)
+summary(df)
+
+
 ```
 
 
