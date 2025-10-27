@@ -319,7 +319,20 @@ summary(df)
 ## Importación del fichero
 
 ```{r}
+library(readxl)
 filename <- "data/subjectInfo.xlsx"
+
+sheets <- excel_sheets(filename)
+df <- list()
+
+for (n in seq_along(sheets)) {
+  df[[sheets[n]]] <- read_excel(filename, sheet = sheets[n])
+}
+
+df <- lapply(sheets, read_excel, path = filename)
+names(df) <- sheets
+
+save(file = "data/subjectInfo.RData", list = "df")
 ```
 
   1. Leer cada hoja (hasta 4) en data frames separados (`Hoja1`, `Hoja2`, ...) usando `read_excel` y el parámetro `sheet`.
@@ -334,6 +347,7 @@ filename <- "data/subjectInfo.xlsx"
 
 ```{r}
 # save()
+save(file = "data/subjectInfo.RData", list = "df")
 ```
 
 ## Inspección de los datos
@@ -342,4 +356,10 @@ Inspecciona los datos con `str` (jugar con `max.level`), `head`, `tail` y `summa
 
 ```{r}
 # str, head, tail, summary
+str(subjectInfo)
+head(subjectInfo)
+tail(subjectInfo)
+summary(subjectInfo)
+
+
 ```
